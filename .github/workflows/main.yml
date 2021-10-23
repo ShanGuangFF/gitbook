@@ -40,6 +40,7 @@ jobs:
         MYNAME: ${{github.repository_owner}}          
       run: |
         ls -a
+        cd testBook
         cd _book
         git config --global user.email "${MYEMAIL}"
         git config --global user.name "${MYNAME}"
