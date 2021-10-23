@@ -41,10 +41,12 @@ jobs:
       run: |
         ls -a
         cd testBook
-        cd _book
         git config --global user.email "${MYEMAIL}"
         git config --global user.name "${MYNAME}"
-        git add . 
+        mkdir testBook
+        git init
+        git remote add origin https://${REF}
+        git add _book 
         git commit -m "Updated By Github Actions With Build ${{github.run_number}} of ${{github.workflow}} For Github Pages"
         git branch -M main
         git push --force --quiet "https://${TOKEN}@${REF}" main:gh-pages
