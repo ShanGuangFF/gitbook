@@ -1,39 +1,49 @@
-# This is a basic workflow to help you get started with Actions
-
-name: CI
-
-# Controls when the workflow will run
-on:
-  # Triggers the workflow on push or pull request events but only for the main branch
+name: auto-generate-gitbook
+on:                                 #在main分支上进行push时触发  
   push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+    branches:
+    - main
+    paths:
+    - 'testBook/**'
 
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
-
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
+  main-to-gh-pages:
     runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
-
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
-
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
-        run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
-          echo your repository is ${{ github.repository }}
-          echo github.workspace is ${{ github.workspace }}
-          echo github.action_path is ${{ github.action_path}}
+        
+    steps:                          
+    - name: checkout main
+      uses: actions/checkout@v2
+      with:
+        ref: main
+            
+    - name: install nodejs
+      uses: actions/setup-node@v1
+      
+    - name: configue gitbook
+      run: |
+        npm install -g gitbook-cli          
+        gitbook install
+        npm install -g gitbook-summary
+                
+    - name: generate _book folder
+      run: |
+        cd testBook
+        book sm
+        gitbook build
+                
+    - name: push _book to branch gh-pages 
+      env:
+        TOKEN: ${{ secrets.TOKEN }}
+        REF: github.com/${{github.repository}}
+        MYEMAIL: 909278799@qq.com                  # ！！记得修改为自己github设置的邮箱
+        MYNAME: ${{github.repository_owner}}          
+      run: |
+        cd _book
+        git config --global user.email "${MYEMAIL}"
+        git config --global user.name "${MYNAME}"
+        git init
+        git remote add origin https://${REF}
+        git add . 
+        git commit -m "Updated By Github Actions With Build ${{github.run_number}} of ${{github.workflow}} For Github Pages"
+        git branch -M main
+        git push --force --quiet "https://${TOKEN}@${REF}" main:gh-pages
