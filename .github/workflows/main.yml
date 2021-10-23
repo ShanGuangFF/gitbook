@@ -42,6 +42,8 @@ jobs:
         ls -a
         cd testBook
         cd _book
+        cd ..
+        cd ..
         git config --global user.email "${MYEMAIL}"
         git config --global user.name "${MYNAME}"
         git init
@@ -49,4 +51,4 @@ jobs:
         git add . 
         git commit -m "Updated By Github Actions With Build ${{github.run_number}} of ${{github.workflow}} For Github Pages"
         git branch -M main
-        git push --force --quiet "https://${TOKEN}@${REF}/testBook" main:gh-pages
+        git push --force --quiet "https://${TOKEN}@${REF}" main:gh-pages
