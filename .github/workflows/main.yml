@@ -42,8 +42,6 @@ jobs:
         ls -a
         cd testBook
         cd _book
-        cd ..
-        cd ..
         git config --global user.email "${MYEMAIL}"
         git config --global user.name "${MYNAME}"
         git add . 
