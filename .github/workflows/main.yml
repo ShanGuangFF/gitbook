@@ -25,17 +25,18 @@ jobs:
                 
     - name: generate testBook folder
       run: |
+        mkdir book
         cd testBook
         book sm
         gitbook build
-        mv _book ../testBookPri
+        mv _book ../book/testBookPri
         
     - name: generate testBook2 folder
       run: |
         cd testBook2
         book sm
         gitbook build
-        mv _book ../testBook2Pri
+        mv _book ../book/testBook2Pri
                 
     - name: push _book to branch gh-pages 
       env:
@@ -44,10 +45,12 @@ jobs:
         MYEMAIL: 909278799@qq.com                  # ！！记得修改为自己github设置的邮箱
         MYNAME: ${{github.repository_owner}}          
       run: |
+        cd book
         ls -a
         git config --global user.email "${MYEMAIL}"
         git config --global user.name "${MYNAME}"
         git init
+        git remote add origin https://${REF}
         git add testBookPri 
         git add testBook2Pri
         git commit -m "Updated By Github Actions With Build ${{github.run_number}} of ${{github.workflow}} For Github Pages"
