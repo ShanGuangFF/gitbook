@@ -3,8 +3,6 @@ on:                                 #在main分支上进行push时触发
   push:
     branches:
     - main
-    paths:
-    - 'testBook/**'
 
 jobs:
   main-to-gh-pages:
@@ -25,12 +23,19 @@ jobs:
         gitbook install
         npm install -g gitbook-summary
                 
-    - name: generate _book folder
+    - name: generate testBook folder
       run: |
         cd testBook
         book sm
         gitbook build
+        mv _book ../testBookPri
         
+    - name: generate testBook2 folder
+      run: |
+        cd testBook2
+        book sm
+        gitbook build
+        mv _book ../testBook2Pri
                 
     - name: push _book to branch gh-pages 
       env:
@@ -40,13 +45,12 @@ jobs:
         MYNAME: ${{github.repository_owner}}          
       run: |
         ls -a
-        cd testBook
         git config --global user.email "${MYEMAIL}"
         git config --global user.name "${MYNAME}"
-        mv _book testBook
         git init
         git remote add origin https://${REF}
-        git add testBook 
+        git add testBookPri 
+        git add testBook2Pri
         git commit -m "Updated By Github Actions With Build ${{github.run_number}} of ${{github.workflow}} For Github Pages"
         git branch -M main
         git push --force --quiet "https://${TOKEN}@${REF}" main:gh-pages
