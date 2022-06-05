@@ -30,13 +30,14 @@ jobs:
         book sm
         gitbook build
         mv _book ../book/testBookPri
-        
-    - name: generate testBook2 folder
+    
+    # 环境变量书
+    - name: generate environment folder
       run: |
-        cd testBook2
+        cd environment
         book sm
         gitbook build
-        mv _book ../book/testBook2Pri
+        mv _book ../book/environment
                 
     - name: push _book to branch gh-pages 
       env:
@@ -51,8 +52,8 @@ jobs:
         git config --global user.name "${MYNAME}"
         git init
         git remote add origin https://${REF}
-        git add testBookPri 
-        git add testBook2Pri
+        git add testBookPri
+        git add environment
         git commit -m "Updated By Github Actions With Build ${{github.run_number}} of ${{github.workflow}} For Github Pages"
         git branch -M main
         git push --force --quiet "https://${TOKEN}@${REF}" main:gh-pages
