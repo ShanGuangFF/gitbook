@@ -4,11 +4,7 @@
 	"description" : "记录Gitbook的配置和一些插件的使用",
 	"language" : "zh-hans" ,
 	
-	"links" : {
-    "sidebar" : {
-        "Home" : "https://www.baidu.com"
-    	}
-	},
+
 
 	"plugins": [
     	"-search",
@@ -17,20 +13,43 @@
     	"back-to-top-button",
     	"chapter-fold",
     	"expandable-chapters",
-    	"code",
+    	"copy-code-button",
     	"advanced-emoji",
     	"splitter",
-    	"page-treeview",
-    	"page-toc-button",
     	"pageview-count",
-    	"popup"
+    	"popup",
+		"anchor-navigation-ex",
+		"tbfed-pagefooter",
+		"prism",
+        "-highlight",
+		"hide-element"
 	],
 
 	"pluginsConfig": {
-        "page-toc-button": {
-            "maxTocDepth": 2,
-            "minTocSize": 2
-           }
+		"anchor-navigation-ex": {
+			"showLevel": true,
+			"showGoTop":false,
+			 "float": { 
+				"floatIcon": "fa fa-anchor", 
+				"showLevelIcon": false,  
+				"level1Icon": "fa fa-hand-o-right", 
+				"level2Icon": "fa fa-hand-o-right",
+				"level3Icon": "fa fa-hand-o-right"
+			}
+		},
+		"tbfed-pagefooter": {
+            "copyright":"",
+            "modify_label": "该文件最后修改时间：",
+            "modify_format": "YYYY-MM-DD HH:mm:ss"
+        },
+		"prism": {
+            "css": [
+                "prism-themes/themes/prism-darcula.css"
+            ]
+        },
+		"hide-element": {
+            "elements": [".gitbook-link"]
+        }
     }
 
 }
